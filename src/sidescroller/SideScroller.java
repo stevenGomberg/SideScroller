@@ -22,7 +22,7 @@ import javafx.util.Duration;
 
 /**
  *
- * @author Steven and Andrew and Ryan
+ * @author Steven
  */
 public class SideScroller extends Application {
     Stage stage = new Stage();
