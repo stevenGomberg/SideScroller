@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
 
 /**
  *
- * @author Steven
+ * @author Steven and Andrew and Ryan
  */
 public class Obstacle {
     private boolean passable = false;
