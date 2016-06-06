@@ -6,7 +6,8 @@
 package sidescroller;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.awt.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -35,9 +36,18 @@ public class SideScroller extends Application {
     double xVelocity = 0;
     boolean screenBound = false;
     Player centerPlayer;
+    
+    //Corner Targets
+    Point c1 = new Point(20, 20);
+    Point c4 = new Point(1980, 20);
+    Point c3 = new Point(1980, 1980);
+    Point c2 = new Point(20, 1980);
+    Point[] corners = {c1, c2, c3, c4};
+    Point target = c1;
+    
     //Lists
-    List<Player> activePlayers = new ArrayList();
-    List<Obstacle> activeNodes = new ArrayList();
+    ArrayList<Player> activePlayers = new ArrayList<Player>();
+    ArrayList<Obstacle> activeNodes = new ArrayList<Obstacle>();
     
     
     @Override
@@ -127,6 +137,10 @@ public class SideScroller extends Application {
         perFrame = new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
                 
+                Player closest;
+                int count = 0;
+                double d = 10000.00;
+                
                 //Messy and not setup for multiplayer. Needs to be Fixed VVVVVV -Steven
                 for(Player p:activePlayers){
                     
@@ -134,6 +148,28 @@ public class SideScroller extends Application {
                         p.getImage().setX(p.getImage().getX() - xVelocity);
                     }
                     p.update();
+                    
+                    double playerDistance = Math.sqrt(Math.pow(Math.abs(p.getImage().getX() - target.getX()), 2) + Math.pow(Math.abs(p.getImage().getY() - target.getY()), 2));
+                    
+                    if(playerDistance < d && playerDistance > 20)
+                    {
+                    	centerPlayer = p;
+                    	d = playerDistance;
+                    }else if(playerDistance < d)
+                    {
+                    	centerPlayer = p;
+                    	d = playerDistance;
+                    	if(count < 4)
+                    	{
+                    		target = corners[count];
+                    		count++;
+                    	}else
+                    	{
+                    		count = 0;
+                    		target = corners[count];
+                    		count++;
+                    	}
+                    }
                 }
                     
                 //Move Map
